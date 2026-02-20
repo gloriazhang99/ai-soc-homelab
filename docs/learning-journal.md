@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Track daily implementation, mistakes, decisions, and lessons.
+Track implementation, mistakes, decisions, and lessons.
 This mirrors real-world engineering/security run logs.
 
 ## Entry Template

@@ -1,6 +1,7 @@
 # VMware Fusion Runbook: Segmented Network + Routing
 
 ## Objective
+
 Maintain a clean, repeatable baseline for the two-zone lab:
 
 - `corp` (`10.10.10.0/24`) → Kali
@@ -31,6 +32,7 @@ Snapshots for all VMs created as of Feb 19, 2026.
 ## Fast Verification Commands
 
 ### Kali
+
 ```bash
 ip a
 ip route
@@ -39,6 +41,7 @@ ping -c 3 10.10.20.10
 ```
 
 ### Ubuntu
+
 ```bash
 ip a
 ip route
@@ -47,12 +50,14 @@ ping -c 3 10.10.10.10
 ```
 
 ### Router (Ubuntu)
+
 ```bash
 ip -br addr
 sysctl net.ipv4.ip_forward
 ```
 
 Expected router result:
+
 - one NIC in `10.10.10.0/24`
 - one NIC in `10.10.20.0/24`
 - `net.ipv4.ip_forward = 1`
@@ -61,7 +66,7 @@ Expected router result:
 
 ## What to finalize next
 
-1. 
+1.
 
 ---
 

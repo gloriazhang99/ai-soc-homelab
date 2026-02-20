@@ -24,8 +24,8 @@ This project is designed for:
 
 ## Planned Stack
 
-- Hypervisor: Proxmox (preferred) or VirtualBox
-- Endpoints: Windows Server + Windows clients + Linux server
+- Hypervisor: VMware Fusion (current on M3 Pro); Proxmox possible on future dedicated host
+- Endpoints (phased): Linux server + Kali now; Windows client/Server later as host resources allow
 - Security tooling: Wazuh/Elastic, Sysmon, Suricata/Zeek
 - ATT&CK-aligned detections and playbooks
 - HITL AI assistant for triage support (approval required for high-impact actions)

@@ -2,28 +2,29 @@
 
 ## Design Goals
 
-- Simulate small corporate environment
-- Centralize logs for detection and triage
-- Enforce HITL approval before high-impact response actions
+- Simulate a small corporate environment with realistic segmentation.
+- Centralize logs for detection and triage workflows.
+- Enforce HITL approval before high-impact response actions.
+- Keep the lab stable on a resource-constrained host.
 
 ## Proposed Environment
 
-- 1 Hypervisor host (Proxmox or VirtualBox)
-- 1 Windows Server (AD/DNS)
-- 2 Windows endpoints
-- 1 Linux server (app/log source)
-- 1 Kali attacker VM
-- Segmented virtual networks: `corp`, `server`, `admin`
+- Hypervisor: VMware Fusion
+- Host: Apple Silicon MacBook Pro (M3 Pro, 18 GB RAM)
+- 1 Kali ARM endpoint
+- 1 Ubuntu ARM server
+- 1 Ubuntu ARM router VM
+- Segmented virtual networks
 
 ## Data Flow (Planned)
 
-1. Endpoints/servers generate logs (Sysmon, Windows Event Logs, Linux logs).
+1. Endpoints/servers generate logs (Linux logs now).
 2. Network sensors capture network telemetry.
 3. SIEM ingests and normalizes telemetry.
 4. Detection rules generate alerts.
-5. AI assistant drafts summary/recommendations.
+5. AI assistant drafts summaries/recommendations.
 6. Human analyst reviews and approves/rejects actions.
-7. Decision and rationale logged for auditability.
+7. Decision and rationale are logged for auditability.
 
 ## Human-in-the-Loop Control Points
 
@@ -39,8 +40,8 @@ Human approval required for:
 - Least privilege admin model where possible
 - All tests are controlled and documented
 
-## Open Decisions
+## Platform and Expansion Notes
 
-- Hypervisor final choice: Proxmox vs VirtualBox
-- SIEM first milestone: Wazuh vs Elastic
-- Case management: markdown-only vs TheHive
+- Proxmox remains a valid future path if a dedicated bare-metal host is added.
+- Current architecture decisions are platform-agnostic.
+- Primary expansion decision now: first SIEM milestone (`Wazuh` vs `Elastic`).

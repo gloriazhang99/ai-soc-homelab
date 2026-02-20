@@ -18,7 +18,7 @@
 
 ## Data Flow (Planned)
 
-1. Endpoints/servers generate logs (Linux logs now; Windows logs as Windows assets are added).
+1. Endpoints/servers generate logs (Linux logs now).
 2. Network sensors capture network telemetry.
 3. SIEM ingests and normalizes telemetry.
 4. Detection rules generate alerts.
@@ -43,5 +43,5 @@ Human approval required for:
 ## Platform and Expansion Notes
 
 - Proxmox remains a valid future path if a dedicated bare-metal host is added.
-- Current architecture decisions are platform-agnostic (zone design + controlled routing remain the same).
+- Current architecture decisions are platform-agnostic.
 - Primary expansion decision now: first SIEM milestone (`Wazuh` vs `Elastic`).

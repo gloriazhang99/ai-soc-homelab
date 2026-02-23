@@ -1,11 +1,11 @@
-# VMware Fusion Runbook: Segmented Network + Routing
+# VMware Fusion Runbook
 
 ## Objective
 
 Maintain a clean, repeatable baseline for the two-zone lab:
 
 - `corp` (`10.10.10.0/24`) → Kali
-- `server` (`10.10.20.0/24`) → Ubuntu
+- `server` (`10.10.20.0/24`) → Ubuntu server + Ubuntu SIEM server
 - Ubuntu router VM provides controlled inter-zone routing
 
 ---
@@ -13,19 +13,20 @@ Maintain a clean, repeatable baseline for the two-zone lab:
 ## Current State (Completed)
 
 - Two custom VMware networks created (`corp`, `server`)
-- Kali NIC attached to `corp`
-- Ubuntu NIC attached to `server`
+- Kali deployed with dual NICs:
+  - `corp` NIC
+  - NAT/management NIC (internet/package access)
+- Ubuntu server deployed with dual NICs:
+  - `server` NIC
+  - NAT/management NIC (internet/package access)
+- SIEM VM deployed with dual NICs:
+  - NAT/management NIC (internet/package access)
+  - `server` NIC
 - Router VM configured with:
   - `10.10.10.1/24` (corp side)
   - `10.10.20.1/24` (server side)
-- Ping validation working:
-  - Kali → `10.10.10.1`
-  - Kali → Ubuntu (`10.10.20.10`)
-  - Ubuntu → `10.10.20.1`
-  - Ubuntu → Kali (`10.10.10.10`)
 
-Segmentation + routed connectivity are both functioning.
-Snapshots for all VMs created as of Feb 19, 2026.
+Segmentation + routed connectivity are functioning for Week 2 SIEM rollout.
 
 ---
 
@@ -40,13 +41,23 @@ ping -c 3 10.10.10.1
 ping -c 3 10.10.20.10
 ```
 
-### Ubuntu
+### Ubuntu server (`lab-srv-01`)
 
 ```bash
 ip a
 ip route
 ping -c 3 10.10.20.1
 ping -c 3 10.10.10.10
+```
+
+### SIEM server (`lab-siem-01`)
+
+```bash
+df -h /
+ip -br a
+ip route
+ping -c 3 10.10.20.1
+ping -c 3 10.10.20.10
 ```
 
 ### Router (Ubuntu)
@@ -64,23 +75,35 @@ Expected router result:
 
 ---
 
-## What to finalize next
+## Change Records
 
-1.
+### Change Record - 2026-02-21
+
+- Change: Built `lab-siem-01`, added second NIC, adjusted disk size, baseline connectivity verification.
+- Why: Needed dedicated SIEM compute and stable network path before Wazuh install.
+- Before: No SIEM VM in server zone.
+- After: SIEM VM reachable in server zone (`10.10.20.20`) with package install path via mgmt NAT.
+- Validation commands: `ip -br a`, `ip route`, `ping -c 3 10.10.20.1`, `ping -c 3 10.10.20.10`, `df -h /`.
+- Result: Connectivity and resized storage verified.
+- Rollback plan: Revert to pre-install VM snapshot and reapply NIC/disk settings.
+
+### Change Record - 2026-02-22
+
+- Change: Installed Wazuh all-in-one stack on `lab-siem-01`, deployed Wazuh agent to Ubuntu server.
+- Why: Start SIEM telemetry onboarding for Week 2 objectives.
+- Before: Segmented network existed but no active SIEM ingestion pipeline.
+- After: Wazuh dashboard up; Ubuntu server agent active; baseline events visible in Threat Hunting.
+- Validation commands:
+    -`systemctl status wazuh-dashboard wazuh-manager wazuh-indexer`, `systemctl status wazuh-agent --no-pager` (on Ubuntu server).
+  - Dashboard Endpoints + Threat Hunting checks.
+- Result: Basic ingestion validated.
+- Rollback plan: Restore snapshots and remove Wazuh packages if service instability occurs.
 
 ---
 
-## Fill-in Guide
+## What to finalize next
 
-Template for each time there's a network change:
-
-```md
-### Change Record - YYYY-MM-DD
-- Change:
-- Why:
-- Before:
-- After:
-- Validation commands:
-- Result:
-- Rollback plan:
-```
+1. Enable and validate router log forwarding to SIEM.
+2. Onboard Kali logs (agent or syslog-forward path).
+3. Define minimal network control policy between `corp` and `server`.
+4. Capture sanitized screenshots and architecture diagram for public repo evidence.

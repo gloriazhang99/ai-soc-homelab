@@ -16,11 +16,11 @@ This project is designed for:
 - Practical skill growth for cybersecurity roles
 - Hands-on Human-in-the-Loop (HITL) AI security operations
 
-## Current Scope (Week 1)
+## Current Scope (Weeks 1-2)
 
-- Documentation baseline
-- Lab architecture and network design
-- Environment planning (hypervisor, VM specs, segmentation)
+- Documentation baseline and architecture
+- Segmented network implementation (`corp` + `server`)
+- SIEM foundation deployment (Wazuh server + first enrolled agent)
 
 ## Planned Stack
 
@@ -51,6 +51,13 @@ This project is designed for:
 
 ## Status
 
-- Branch: `codex/bootstrap`
-- Week: 1
-- Progress: Documentation and environment planning in progress
+- Branch: `codex/week2-siem-pipeline`
+- Week: 2
+- Progress: Routing baseline complete; Wazuh server and first Ubuntu agent validated with basic ingestion
+
+## Immediate Next Milestones
+
+1. Onboard additional telemetry sources (router logs and Kali logs).
+2. Normalize key fields for triage consistency (host, src/dst IP, user, action, severity).
+3. Build a first SOC dashboard view for daily monitoring + incident handoff.
+4. Add sanitized implementation evidence (screenshots/diagram) with secrets/IP exposure review.

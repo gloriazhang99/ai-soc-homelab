@@ -1,5 +1,6 @@
 {
   "MD013": { "line_length": 160, "tables": false, "code_blocks": false },
   "MD055": { "style": "leading_and_trailing" },
-  "MD060": false
+  "MD060": false,
+  "MD024": { "siblings_only": true}
 }
